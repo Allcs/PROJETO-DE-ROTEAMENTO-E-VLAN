@@ -1,0 +1,58 @@
+enable
+configure terminal
+hostname SW-21
+banner motd "SOMENTE PESSOAL AUTORIZADO"
+enable secret SenhadaEnable
+service password-encryption
+ip domain-name Rede2.Local
+crypto key generate rsa general-key modulus 1024
+username henrique privilege 15 secret CasaArryn
+username andrecaires privilege 15 secret CasaArryn
+username Julio privilege 15 secret CasaArryn
+username Leonardo privilege 15 secret CasaArryn
+line console 0
+password SenhadaConsole
+login local
+exit
+line vty 0 15
+transport input ssh
+login local
+exec-timeout 5
+exit
+ip default-gateway 172.16.2.165
+interface gigabitEthernet 0/1
+switchport mode trunk
+switchport trunk allowed vlan 10,20,30,99,100
+switchport trunk native vlan 99
+no shutdown
+exit
+interface fastethernet 0/1
+switchport mode access
+switchport access vlan 10
+interface fastethernet 0/2
+switchport mode access
+switchport access vlan 20
+interface fastethernet 0/3
+switchport mode access
+switchport access vlan 30
+interface vlan 100
+ip address 172.16.2.193 255.255.255.224
+description INTERFACE DE GERENCIAMENTO
+exit
+vlan 10
+name VLAN10
+vlan 20
+name VLAN20
+vlan 30
+name VLAN30
+vlan 100
+name VLAN100
+vlan 99
+name VLAN99
+interface gigabitEthernet 0/2
+switchport mode trunk 
+switchport trunk allowed vlan 10,20,30,99,100
+switchport trunk native vlan 99
+do wr
+
+

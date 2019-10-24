@@ -1,0 +1,43 @@
+enable
+configure terminal
+hostname RT-11
+banner motd "SOMENTE PESSOAL AUTORIZADO"
+enable secret SenhadaEnable
+service password-encryption
+ip domain-name Rede1.Local
+crypto key generate rsa general-key modulus 1024
+username henrique privilege 15 secret CasaArryn
+username andrecaires privilege 15 secret CasaArryn
+username Julio privilege 15 secret CasaArryn
+username Leonardo privilege 15 secret CasaArryn
+line console 0
+password SenhadaConsole
+login local
+exit
+line vty 0 15
+transport input ssh
+login local
+exec-timeout 5
+exit
+interface serial 0/0/1
+ip address 200.18.189.2 255.255.255.252
+description REDE WAN
+no shutdown
+exit
+interface gigabitethernet 0/1
+no shutdown
+exit
+interface gigabitethernet 0/1.10
+encapsulation dot1q 10
+ip address 172.16.1.1 255.255.255.128
+exit
+interface gigabitethernet 0/1.20
+encapsulation dot1q 20
+ip address 172.16.0.1 255.255.255.0
+exit
+interface gigabitethernet 0/1.100
+ip address 172.16.1.129 255.255.255.240
+exit
+ip route 172.16.2.0 255.255.255.192 200.18.189.1
+exit
+do wr
